@@ -14,6 +14,6 @@ class Innocent extends Person {
   }
   
   void OnMouseClick(evt) {
-    print("Innocent is clicked");
+    _selectedController.add(this);
   }
 }

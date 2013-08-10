@@ -13,6 +13,6 @@ class Criminal extends Person {
   }
   
   void OnMouseClick(evt) {
-    print("Criminal is clicked");
+    _selectedController.add(this);
   }
 }

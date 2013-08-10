@@ -5,15 +5,18 @@ import 'dart:math';
 import 'dart:html' as html;
 import 'package:stagexl/stagexl.dart';
 
+part "Game.dart";
 part "Level.dart";
 part "Person.dart";
 part "Criminal.dart";
 part "Innocent.dart";
+part "Surveillance.dart";
+part "Splash.dart";
 
 Stage stage;
 RenderLoop renderLoop;
 ResourceManager resourceManager;
-Level level;
+Game game;
 
 void main() {
   stage = new Stage("myStage", html.document.query('#stage'));
@@ -21,24 +24,17 @@ void main() {
   renderLoop = new RenderLoop();
   renderLoop.addStage(stage);
   
-  stage.onEnterFrame.listen(Loop);
-  resourceManager = new ResourceManager();
+  resourceManager = new ResourceManager()
+    ..addBitmapData("start", "images/Start.jpg")
+    ..addBitmapData("intro", "images/Intro.jpg")
+    ..addBitmapData("level_1_intro", "images/Level_1_Intro.jpg")
+    ..addBitmapData("level_clear", "images/Level_Clear.jpg");
   
-  level = new Level(stage, resourceManager, 1, 15, 400, 400, 3, 5, 1);
-  level.x = 0;
-  level.y = 0;
-  stage.addChild(level);
-  
-  level.Start();
-  level.timeover.listen(OnTimeOver);
-  
-  //resourceManager.load().then(onValue)
+  resourceManager.load().then(Start);
 }
 
-void OnTimeOver(evt) {
-  print("GAME OVER");
-}
-
-void Loop(EnterFrameEvent evt) {
-  level.Loop();
+void Start(result) {
+  game = new Game(resourceManager, stage);
+  game.Start();
+  stage.addChild(game);
 }

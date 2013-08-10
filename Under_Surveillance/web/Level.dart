@@ -97,26 +97,32 @@ class Level extends DisplayObjectContainer {
       this.addChild(criminal);
       criminals[i] = criminal;
       all[i + numOfInnocents] = criminal;      
-    }
+    }    
+
+    var levelText = new TextField()
+      ..x = 500
+      ..y = 30
+      ..text = "Level $level";
+    this.addChild(levelText);
     
     _timerText = new TextField()
-        ..x = 300
+        ..x = 450
         ..y = 30
         ..text = timeLeft.toString();
     this.addChild(_timerText);
     
     _budgetLeftText = new TextField()
-      ..x = 200
+      ..x = 350
       ..y = 30
       ..text = budgetLeft.toString();
-    this.addChild(_budgetLeftText);
+    this.addChild(_budgetLeftText);    
     
-    complianceBarBackground = new Bitmap(new BitmapData(150, 10, false, Color.LightPink))
+    complianceBarBackground = new Bitmap(new BitmapData(300, 20, false, Color.LightPink))
     ..x = 30
     ..y = 30;
     this.addChild(complianceBarBackground);
     
-    complianceBar = new Bitmap(new BitmapData(1, 10, false, Color.Red))
+    complianceBar = new Bitmap(new BitmapData(1, 20, false, Color.Red))
       ..x = 30
       ..y = 30;
     this.addChild(complianceBar);
@@ -227,7 +233,7 @@ class Level extends DisplayObjectContainer {
     }
     
     _surveillance = new Surveillance(person, resourceManager)
-      ..x = 450
+      ..x = maxX + 50
       ..y = 100;
     this.addChild(_surveillance);
   }

@@ -35,19 +35,53 @@ class Game extends DisplayObjectContainer {
     StartLevel(_level.level + 1);
   }
  
+  Level GetLevel(n) {
+    switch (n) {
+      case 1: 
+        return new Level(stage, resourceManager, 1, 30, 600, 500, 2, 1, 100000);
+      case 2:
+        return new Level(stage, resourceManager, 2, 45, 600, 500, 4, 1, 100000);
+      case 3:
+        return new Level(stage, resourceManager, 3, 60, 600, 500, 6, 1, 100000);
+      case 4:
+        return new Level(stage, resourceManager, 4, 65, 600, 500, 7, 1, 90000);
+      case 5:
+        return new Level(stage, resourceManager, 5, 65, 600, 500, 8, 1, 90000);
+      case 6:
+        return new Level(stage, resourceManager, 6, 55, 600, 500, 9, 1, 90000);
+      case 7:
+        return new Level(stage, resourceManager, 7, 50, 600, 500, 10, 1, 80000);
+      case 8:
+        return new Level(stage, resourceManager, 8, 45, 600, 500, 10, 1, 70000);
+      case 9:
+        return new Level(stage, resourceManager, 9, 40, 600, 500, 11, 1, 60000);
+      case 10:
+        return new Level(stage, resourceManager, 10, 40, 600, 500, 12, 1, 50000);
+      default:
+        return null;
+    }
+  }
+  
   void StartLevel(n) {
     this.removeChild(_splash);
     
-    _level = new Level(stage, resourceManager, 1, 45, 800, 500, 5, 1, 100000);
-    _level.x = 0;
-    _level.y = 0;
-    this.addChild(_level);
+    _level = GetLevel(n);
     
-    _level.Start();
-    _gameOverSubscription = _level.onGameover.listen(OnGameOver);
-    _finishGameSubscription = _level.onComplete.listen(OnLevelComplete);
+    if (_level == null) {
+      _splash = new Splash("level_clear", 100, 100, resourceManager);
+      this.addChild(_splash);
+    }
+    else {
+      _level.x = 0;
+      _level.y = 0;
+      this.addChild(_level);
     
-    _enterFrameSubscription = this.onEnterFrame.listen(Loop);
+      _level.Start();
+      _gameOverSubscription = _level.onGameover.listen(OnGameOver);
+      _finishGameSubscription = _level.onComplete.listen(OnLevelComplete);
+    
+      _enterFrameSubscription = this.onEnterFrame.listen(Loop);
+    }
   }
   
   void Loop(evt)

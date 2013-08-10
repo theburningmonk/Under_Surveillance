@@ -1,0 +1,5 @@
+name: Under_Surveillance
+description: GameCraft 2013 entry
+dependencies:
+  browser: any
+  stagexl: any

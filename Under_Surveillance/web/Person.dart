@@ -1,22 +1,27 @@
 part of UnderSurveillance;
 
-abstract class Person {
+abstract class Person extends Sprite {
   int suspisionLevel;
   int maxSuspisionLevel;
-  int x;
   int maxX;
-  int y;
   int maxY;
-  int xDir;
-  int yDir;
-  Random random;
+  num xDir;
+  num yDir;
+  Random random = new Random();
   
-  Person(this.maxSuspisionLevel, this.x, this.y, this.maxX, this.maxY)
+  void Init(colour)
   {
-    suspisionLevel = 0;
-    random = new Random();
-    SetDirection();
+    var background = new BitmapData(40, 40, false, colour);
+    var backgroundBitmap = new Bitmap(background);
+    backgroundBitmap
+      ..x = 0
+      ..y = 0;
+    this.addChild(backgroundBitmap);
+    
+    this.onMouseClick.listen(OnMouseClick);
   }
+  
+  void OnMouseClick(MouseEvent evt);
   
   void Move()
   {
@@ -32,8 +37,8 @@ abstract class Person {
   
   void SetDirection()
   {
-    xDir = random.nextInt(5);
-    yDir = random.nextInt(5);
+    xDir = random.nextDouble();
+    yDir = random.nextDouble();
     
     if (random.nextDouble() > 0.5) 
     {
@@ -47,9 +52,8 @@ abstract class Person {
   }
   
   void Loop() {
-    if (random.nextDouble() < 0.01)
+    if (random.nextInt(100) < 1)
     {
-      // change direction once per 100 frame
       SetDirection();
     }
     

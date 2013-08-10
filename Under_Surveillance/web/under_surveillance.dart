@@ -25,9 +25,9 @@ void main() {
   renderLoop.addStage(stage);
   
   resourceManager = new ResourceManager()
-    ..addBitmapData("start", "images/Start.jpg")
-    ..addBitmapData("intro", "images/Intro.jpg")
-    ..addBitmapData("level_1_intro", "images/Level_1_Intro.jpg")
+    ..addBitmapData("start", "images/Start.png")
+    ..addBitmapData("start_button", "images/Start_Btn.png")
+    ..addBitmapData("intro", "images/Intro.png")
     ..addBitmapData("level_clear", "images/Level_Clear.jpg")
     ..addBitmapData("game", "images/Game.png")
     ..addBitmapData("game_overlay", "images/Game_Overlay.png")

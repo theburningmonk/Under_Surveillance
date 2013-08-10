@@ -166,21 +166,20 @@ main: function() {
   t1.addBitmapData$2("intro", "images/Intro.jpg");
   t1.addBitmapData$2("level_1_intro", "images/Level_1_Intro.jpg");
   t1.addBitmapData$2("level_clear", "images/Level_Clear.jpg");
-  t1.addBitmapData$2("game", "images/Game.jpg");
+  t1.addBitmapData$2("game", "images/Game.png");
+  t1.addBitmapData$2("game_overlay", "images/Game_Overlay.png");
+  t1.addBitmapData$2("game_over", "images/Game_Over.png");
+  t1.addBitmapData$2("success", "images/Success.png");
   $.resourceManager = t1;
   $.load$0$x($.resourceManager).then$1($.Start$closure);
 },
 
 Start: function(result) {
-  var t1, t2;
-  t1 = $.List_List(null, $.DisplayObject);
-  $.setRuntimeTypeInfo(t1, [$.DisplayObject]);
-  t2 = $.DisplayObject__nextID;
-  $.DisplayObject__nextID = $.$add$ns(t2, 1);
-  $.game = new $.Game(t1, true, true, false, true, true, 0, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
-  t2 = $.game;
-  t2.Start$0;
-  t2.ShowStart$0();
+  var t1;
+  $.game = $.Game$($.resourceManager, $.stage);
+  t1 = $.game;
+  t1.Start$0;
+  t1.ShowStart$0();
   $.stage.addChild$1($.game);
 },
 
@@ -266,10 +265,9 @@ Game: {"": "DisplayObjectContainer;_children,_mouseChildren,_tabChildren,doubleC
     this.removeChild$1($._splash);
     $._level = this.GetLevel$1(n);
     t1 = $._level;
-    if (t1 == null) {
-      $._splash = $.Splash$("level_clear", 100, 100, $.resourceManager);
-      this.addChild$1($._splash);
-    } else {
+    if (t1 == null)
+      this.Success$0();
+    else {
       t1.set$x(t1, 0);
       t1.set$y(t1, 0);
       this.addChild$1(t1);
@@ -305,29 +303,88 @@ Game: {"": "DisplayObjectContainer;_children,_mouseChildren,_tabChildren,doubleC
     $._finishGameSubscription.cancel$0();
     $._gameOverSubscription.cancel$0();
     this.removeChild$1($._level);
-    $._splash = $.Splash$("level_clear", 368, 551, $.resourceManager);
-    this.addChild$1($._splash);
-    t1 = $._splash;
-    t1.get$onContinue;
-    t1 = t1._continueController;
-    t1.get$stream;
-    t2 = new $._BroadcastStream(t1);
-    $.setRuntimeTypeInfo(t2, [$.getRuntimeTypeArgument(t1, "_BroadcastStreamController", 0)]);
-    t2.listen$1(this.get$CloseSplash());
+    if ($._level.level === 10)
+      this.Success$0();
+    else {
+      $._splash = $.Splash$("level_clear", 368, 551, $.resourceManager);
+      this.addChild$1($._splash);
+      t1 = $._splash;
+      t1.get$onContinue;
+      t1 = t1._continueController;
+      t1.get$stream;
+      t2 = new $._BroadcastStream(t1);
+      $.setRuntimeTypeInfo(t2, [$.getRuntimeTypeArgument(t1, "_BroadcastStreamController", 0)]);
+      t2.listen$1(this.get$CloseSplash());
+    }
   },
   get$OnLevelComplete: function() {
     return new $.BoundClosure$1(this, "OnLevelComplete$1", null);
   },
   OnGameOver$1: function(reason) {
+    var t1, t2, background;
     $._enterFrameSubscription.cancel$0();
     $._finishGameSubscription.cancel$0();
     $._gameOverSubscription.cancel$0();
     $.Primitives_printString("GAME OVER (" + $.S(reason) + ")");
-    this.ShowStart$0();
+    this.removeChild$1($._level);
+    t1 = $.resourceManager.getBitmapData$1("game_over");
+    t2 = $.DisplayObject__nextID;
+    $.DisplayObject__nextID = $.$add$ns(t2, 1);
+    background = new $.Bitmap(null, null, null, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
+    background.set$bitmapData(t1);
+    background._pixelSnapping = "auto";
+    background._clipRectangle = null;
+    this.addChild$1(background);
   },
   get$OnGameOver: function() {
     return new $.BoundClosure$1(this, "OnGameOver$1", null);
-  }
+  },
+  Success$0: function() {
+    var t1, t2, background;
+    $._enterFrameSubscription.cancel$0();
+    $._finishGameSubscription.cancel$0();
+    $._gameOverSubscription.cancel$0();
+    $.Primitives_printString("Success!");
+    t1 = $.resourceManager.getBitmapData$1("success");
+    t2 = $.DisplayObject__nextID;
+    $.DisplayObject__nextID = $.$add$ns(t2, 1);
+    background = new $.Bitmap(null, null, null, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
+    background.set$bitmapData(t1);
+    background._pixelSnapping = "auto";
+    background._clipRectangle = null;
+    this.addChild$1(background);
+  },
+  Game$2: function(resourceManager, stage) {
+    var t1, t2, background, backgroundOverlay;
+    t1 = resourceManager.getBitmapData$1("game");
+    t2 = $.DisplayObject__nextID;
+    $.DisplayObject__nextID = $.$add$ns(t2, 1);
+    background = new $.Bitmap(null, null, null, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
+    background.set$bitmapData(t1);
+    background._pixelSnapping = "auto";
+    background._clipRectangle = null;
+    this.addChild$1(background);
+    t1 = resourceManager.getBitmapData$1("game_overlay");
+    t2 = $.DisplayObject__nextID;
+    $.DisplayObject__nextID = $.$add$ns(t2, 1);
+    backgroundOverlay = new $.Bitmap(null, null, null, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
+    backgroundOverlay.set$bitmapData(t1);
+    backgroundOverlay._pixelSnapping = "auto";
+    backgroundOverlay._clipRectangle = null;
+    this.addChild$1(backgroundOverlay);
+  },
+  static: {
+Game$: function(resourceManager, stage) {
+  var t1, t2;
+  t1 = $.List_List(null, $.DisplayObject);
+  $.setRuntimeTypeInfo(t1, [$.DisplayObject]);
+  t2 = $.DisplayObject__nextID;
+  $.DisplayObject__nextID = $.$add$ns(t2, 1);
+  t2 = new $.Game(t1, true, true, false, true, true, 0, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
+  t2.Game$2(resourceManager, stage);
+  return t2;
+}}
+
 },
 
 Game_CloseStart_closure: {"": "Closure;this_0",
@@ -389,8 +446,7 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
   OnTimerEvent$1: function(timer) {
     var t1;
     this.timeLeft = this.timeLeft - 1;
-    $.Primitives_printString("" + this.timeLeft);
-    $.set$text$x(this._timerText, $.JSInt_methods.toString$0(this.timeLeft));
+    $.set$text$x(this._timerText, "Time : " + $.JSInt_methods.toString$0(this.timeLeft) + "s");
     if (this.timeLeft === 0) {
       t1 = this._gameOverController;
       t1.add$1;
@@ -411,10 +467,10 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
       person.Loop$0();
     }
     $.set$text$x(this._budgetLeftText, "$ " + $.S(this.budgetLeft));
-    for (t1 = this.criminals, t1.get$iterator, t1 = new $.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
+    for (t1 = this.criminals, t1 = new $.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
       t2 = t1._liblib$_current.get$suspisionLevel();
       if (typeof t2 !== "number")
-        return this.Loop$0$bailout(1, t1, t2);
+        return this.Loop$0$bailout(1, t2, t1);
       if (t2 === 100) {
         t1 = this._completeController;
         t1.add$1;
@@ -435,7 +491,7 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
     $.set$width$x(t1, t2 / t3 * t4);
     t1 = this.civilCompliance;
     if (typeof t1 !== "number")
-      return this.Loop$0$bailout(2, t1);
+      return this.Loop$0$bailout(2, 0, t1);
     if (t1 === 0) {
       t1 = this._gameOverController;
       t1.add$1;
@@ -444,7 +500,7 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
       t1._sendData$1("Civil Compliance");
     }
   },
-  Loop$0$bailout: function(state0, t1, t2) {
+  Loop$0$bailout: function(state0, t2, t1) {
     switch (state0) {
       case 0:
         for (t1 = this.all, t1 = new $.ListIterator(t1, t1.length, 0, null); t1.moveNext$0();) {
@@ -454,7 +510,6 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
         }
         $.set$text$x(this._budgetLeftText, "$ " + $.S(this.budgetLeft));
         t1 = this.criminals;
-        t1.get$iterator;
         t1 = new $.ListIterator(t1, t1.length, 0, null);
       case 1:
         L0:
@@ -690,7 +745,7 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
       this.removeChildAt$1(childIndex);
     }
     t1 = $.Surveillance$(person, $.resourceManager);
-    t1.set$x(t1, this.maxX + 50);
+    t1.set$x(t1, 820);
     t1.set$y(t1, 100);
     this._surveillance = t1;
     this.addChild$1(this._surveillance);
@@ -699,10 +754,14 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
     return new $.BoundClosure$1(this, "SelectPerson$1", null);
   },
   Level$11: function(stage, resourceManager, level, timeLeft, maxX, maxY, numOfInnocents, numOfCriminals, budget, maxCompliancePc, maxInnocentSuspicision) {
-    var t1, t2, t3, t4, background, t5, idx, i, max, t6, t7, t8, t9, t10, t11, t12, t13, innocent, criminal, levelText;
+    var t1, t2, t3, t4, t5, idx, i, max, t6, t7, t8, t9, t10, t11, t12, t13, innocent, criminal, textFormat, levelText;
     this._configuration = $.Configuration$();
     t1 = this.numOfInnocents;
     t2 = this.numOfCriminals;
+    if (t1 == null)
+      throw t1.$add();
+    if (t2 == null)
+      throw $.iae(t2);
     t3 = t1 + t2;
     this.maxCivilCompliance = maxCompliancePc * 100 * t3;
     this.civilCompliance = this.maxCivilCompliance;
@@ -710,14 +769,6 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
     t3 = $.List_List(t3, $.Person);
     $.setRuntimeTypeInfo(t3, [$.Person]);
     this.all = t3;
-    t3 = resourceManager.getBitmapData$1("game");
-    t4 = $.DisplayObject__nextID;
-    $.DisplayObject__nextID = $.$add$ns(t4, 1);
-    background = new $.Bitmap(null, null, null, t4, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
-    background.set$bitmapData(t3);
-    background._pixelSnapping = "auto";
-    background._clipRectangle = null;
-    this.addChild$1(background);
     t3 = $.List_List(t1, $.Innocent);
     $.setRuntimeTypeInfo(t3, [$.Innocent]);
     this.innocents = t3;
@@ -749,7 +800,7 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
       t12.$builtinTypeInfo = [$.DisplayObject];
       t13 = $.DisplayObject__nextID;
       $.DisplayObject__nextID = $.$add$ns(t13, 1);
-      innocent = new $.Innocent(0, 0, 100, 100, 80, null, null, null, null, $.C__Random, "", false, false, false, false, false, null, null, null, null, null, null, null, null, null, null, 0.5, false, false, null, null, null, t12, true, true, false, true, true, 0, t13, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, new $.Matrix(1, 0, 0, 1, 0, 0, 1), new $.Matrix(1, 0, 0, 1, 0, 0, 1), true, null, null);
+      innocent = new $.Innocent(0, 0, 100, 100, 120, null, null, null, null, $.C__Random, "", false, false, false, false, false, null, null, null, null, null, null, null, null, null, null, 0.5, false, false, null, null, null, t12, true, true, false, true, true, 0, t13, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, new $.Matrix(1, 0, 0, 1, 0, 0, 1), new $.Matrix(1, 0, 0, 1, 0, 0, 1), true, null, null);
       innocent.Id = t6;
       innocent._x = t8;
       innocent._transformationMatrixRefresh = true;
@@ -800,7 +851,7 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
       t8.$builtinTypeInfo = [$.DisplayObject];
       t9 = $.DisplayObject__nextID;
       $.DisplayObject__nextID = $.$add$ns(t9, 1);
-      criminal = new $.Criminal(0, 0, 100, 100, 80, null, null, null, null, $.C__Random, "", false, false, false, false, false, null, null, null, null, null, null, null, null, null, null, 0.5, false, false, null, null, null, t8, true, true, false, true, true, 0, t9, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, new $.Matrix(1, 0, 0, 1, 0, 0, 1), new $.Matrix(1, 0, 0, 1, 0, 0, 1), true, null, null);
+      criminal = new $.Criminal(0, 0, 100, 100, 120, null, null, null, null, $.C__Random, "", false, false, false, false, false, null, null, null, null, null, null, null, null, null, null, 0.5, false, false, null, null, null, t8, true, true, false, true, true, 0, t9, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, new $.Matrix(1, 0, 0, 1, 0, 0, 1), new $.Matrix(1, 0, 0, 1, 0, 0, 1), true, null, null);
       criminal.Id = t1;
       criminal._x = t3;
       criminal._transformationMatrixRefresh = true;
@@ -824,43 +875,47 @@ Level: {"": "DisplayObjectContainer;level,timeLeft,maxX,maxY,numOfInnocents,numO
       t1[t3] = criminal;
       ++idx;
     }
+    textFormat = new $.TextFormat("Arial", 16, 4278190080, true, false, false, "left", 0, 0, 0, 0, 0);
     levelText = $.TextField$(null, null);
-    levelText.set$x(levelText, 500);
-    levelText.set$y(levelText, 30);
+    levelText.set$x(levelText, 640);
+    levelText.set$y(levelText, 25);
     levelText.set$text(levelText, "Level " + this.level);
+    levelText.set$defaultTextFormat(textFormat);
     this.addChild$1(levelText);
     t1 = $.TextField$(null, null);
-    t1.set$x(t1, 450);
-    t1.set$y(t1, 30);
-    t1.set$text(t1, $.JSInt_methods.toString$0(this.timeLeft));
+    t1.set$x(t1, 30);
+    t1.set$y(t1, 25);
+    t1.set$text(t1, "Time : " + $.JSInt_methods.toString$0(this.timeLeft) + "s");
+    t1.set$defaultTextFormat(textFormat);
     this._timerText = t1;
     this.addChild$1(this._timerText);
     t1 = $.TextField$(null, null);
-    t1.set$x(t1, 350);
-    t1.set$y(t1, 30);
+    t1.set$x(t1, 220);
+    t1.set$y(t1, 22);
     t1.set$text(t1, $.toString$0(this.budgetLeft));
+    t1.set$defaultTextFormat(textFormat);
     this._budgetLeftText = t1;
     this.addChild$1(this._budgetLeftText);
-    t1 = $.BitmapData$(300, 20, false, 4294948545, 1);
+    t1 = $.BitmapData$(247, 10, false, 4294948545, 1);
     t2 = $.DisplayObject__nextID;
     $.DisplayObject__nextID = $.$add$ns(t2, 1);
     t2 = new $.Bitmap(null, null, null, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
     t2.set$bitmapData(t1);
     t2._pixelSnapping = "auto";
     t2._clipRectangle = null;
-    t2.set$x(t2, 30);
-    t2.set$y(t2, 30);
+    t2.set$x(t2, 178);
+    t2.set$y(t2, 50);
     this.complianceBarBackground = t2;
     this.addChild$1(this.complianceBarBackground);
-    t1 = $.BitmapData$(300, 20, false, 4278222848, 1);
+    t1 = $.BitmapData$(247, 10, false, 4278222848, 1);
     t2 = $.DisplayObject__nextID;
     $.DisplayObject__nextID = $.$add$ns(t2, 1);
     t2 = new $.Bitmap(null, null, null, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
     t2.set$bitmapData(t1);
     t2._pixelSnapping = "auto";
     t2._clipRectangle = null;
-    t2.set$x(t2, 30);
-    t2.set$y(t2, 30);
+    t2.set$x(t2, 178);
+    t2.set$y(t2, 50);
     this.complianceBar = t2;
     this.addChild$1(this.complianceBar);
     this._gameOverController = $.StreamController_StreamController$broadcast(null, null, false, null);
@@ -1061,8 +1116,8 @@ Person: {"": "Sprite;suspisionLevel<,Id<,underCctvSurveillance<,underCreditCardS
       this.SetDirection$0();
   },
   SetDirection$0: function() {
-    this.xDir = Math.random() * 0.7;
-    this.yDir = Math.random() * 0.7;
+    this.xDir = Math.random() * 0.6;
+    this.yDir = Math.random() * 0.6;
     if (Math.random() > 0.5) {
       var t1 = this.xDir;
       if (t1 == null)
@@ -1222,64 +1277,69 @@ Splash$: function(screenName, x, y, resourceManager) {
 
 Surveillance: {"": "Sprite;buttonMode,useHandCursor,hitArea,_graphics,_dropTarget,_children,_mouseChildren,_tabChildren,doubleClickEnabled,mouseEnabled,tabEnabled,tabIndex,_liblib4$_id,_x,_y,_pivotX,_pivotY,_scaleX,_scaleY,_skewX,_skewY,_rotation,_alpha,_visible,_off,_mask,_cache,_cacheRectangle,_cacheDebugBorder,_filters,_shadow,_compositeOperation,_name,_parent,_tmpMatrix,_transformationMatrixPrivate,_transformationMatrixRefresh,_eventStreams,_captureEventStreams",
   Surveillance$2: function(person, resourceManager) {
-    var nameLabel, cctvLabel, creditCardLabel, emailLabel, phoneLabel, agentLabel;
+    var textFormat, nameLabel, cctvLabel, creditCardLabel, emailLabel, phoneLabel, agentLabel;
+    textFormat = new $.TextFormat("Arial", 16, 4278190080, true, false, false, "left", 0, 0, 0, 0, 0);
     nameLabel = $.TextField$(null, null);
     nameLabel.set$x(nameLabel, 0);
     nameLabel.set$y(nameLabel, 0);
-    nameLabel.set$width(nameLabel, 150);
+    nameLabel.set$width(nameLabel, 200);
     nameLabel.set$height(nameLabel, 40);
-    nameLabel.set$background(nameLabel, true);
-    nameLabel.set$backgroundColor(nameLabel, 4287688336);
     nameLabel.set$text(nameLabel, person.get$Id());
+    nameLabel.set$defaultTextFormat(textFormat);
     this.addChild$1(nameLabel);
     cctvLabel = $.TextField$(null, null);
     cctvLabel.set$x(cctvLabel, 0);
     cctvLabel.set$y(cctvLabel, 40);
-    cctvLabel.set$width(cctvLabel, 150);
+    cctvLabel.set$width(cctvLabel, 200);
     cctvLabel.set$height(cctvLabel, 40);
     cctvLabel.set$text(cctvLabel, "  CCTV Surveillance  ");
     cctvLabel.set$background(cctvLabel, true);
     cctvLabel.set$backgroundColor(cctvLabel, 4286578816);
+    cctvLabel.set$defaultTextFormat(textFormat);
     cctvLabel.get$onMouseClick().listen$1(new $.Surveillance_closure(person));
     this.addChild$1(cctvLabel);
     creditCardLabel = $.TextField$(null, null);
     creditCardLabel.set$x(creditCardLabel, 0);
     creditCardLabel.set$y(creditCardLabel, 80);
-    creditCardLabel.set$width(creditCardLabel, 150);
+    creditCardLabel.set$width(creditCardLabel, 200);
     creditCardLabel.set$height(creditCardLabel, 40);
     creditCardLabel.set$text(creditCardLabel, "Credit Card Surveillance");
     creditCardLabel.set$background(creditCardLabel, true);
     creditCardLabel.set$backgroundColor(creditCardLabel, 4294944000);
+    creditCardLabel.set$defaultTextFormat(textFormat);
     creditCardLabel.get$onMouseClick().listen$1(new $.Surveillance_closure0(person));
     this.addChild$1(creditCardLabel);
     emailLabel = $.TextField$(null, null);
     emailLabel.set$x(emailLabel, 0);
     emailLabel.set$y(emailLabel, 120);
-    emailLabel.set$width(emailLabel, 150);
+    emailLabel.set$width(emailLabel, 200);
     emailLabel.set$height(emailLabel, 40);
     emailLabel.set$text(emailLabel, "Email Surveillance");
     emailLabel.set$background(emailLabel, true);
     emailLabel.set$backgroundColor(emailLabel, 4278190335);
+    emailLabel.set$defaultTextFormat(textFormat);
     emailLabel.get$onMouseClick().listen$1(new $.Surveillance_closure1(person));
     this.addChild$1(emailLabel);
     phoneLabel = $.TextField$(null, null);
     phoneLabel.set$x(phoneLabel, 0);
     phoneLabel.set$y(phoneLabel, 160);
-    phoneLabel.set$width(phoneLabel, 150);
+    phoneLabel.set$width(phoneLabel, 200);
     phoneLabel.set$height(phoneLabel, 40);
     phoneLabel.set$text(phoneLabel, "Phone Surveillance");
     phoneLabel.set$background(phoneLabel, true);
     phoneLabel.set$backgroundColor(phoneLabel, 4294967040);
+    phoneLabel.set$defaultTextFormat(textFormat);
     phoneLabel.get$onMouseClick().listen$1(new $.Surveillance_closure2(person));
     this.addChild$1(phoneLabel);
     agentLabel = $.TextField$(null, null);
     agentLabel.set$x(agentLabel, 0);
     agentLabel.set$y(agentLabel, 200);
-    agentLabel.set$width(agentLabel, 150);
+    agentLabel.set$width(agentLabel, 200);
     agentLabel.set$height(agentLabel, 40);
     agentLabel.set$text(agentLabel, "Agent Surveillance");
     agentLabel.set$background(agentLabel, true);
     agentLabel.set$backgroundColor(agentLabel, 4294902015);
+    agentLabel.set$defaultTextFormat(textFormat);
     agentLabel.get$onMouseClick().listen$1(new $.Surveillance_closure3(person));
     this.addChild$1(agentLabel);
   },
@@ -11065,6 +11125,10 @@ TextField: {"": "InteractiveObject;_text,_defaultTextFormat,_autoSize,_type,_car
     var t1 = $.replaceAll$2$s(value, "\r\n", "\n");
     this._text = $.stringReplaceAllUnchecked(t1, "\r", "\n");
     this._caretIndex = this._text.length;
+    this._refreshPending = true;
+  },
+  set$defaultTextFormat: function(value) {
+    this._defaultTextFormat = value.clone$0(value);
     this._refreshPending = true;
   },
   set$background: function(_, value) {

@@ -13,7 +13,8 @@ class Splash extends Sprite {
     Sprite continueButton = new Sprite()
       ..x = x
       ..y = y
-      ..addChild(new Bitmap(new BitmapData(284, 79, false, Color.DarkGreen)));
+      ..addChild(new Bitmap(resourceManager.getBitmapData("start_button")));
+      ;
     this.addChild(continueButton);
     
     _continueController = new StreamController.broadcast();

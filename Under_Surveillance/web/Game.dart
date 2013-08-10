@@ -106,7 +106,7 @@ class Game extends DisplayObjectContainer {
       Success();
     }
     else {
-      _splash = new Splash("level_clear", 368, 551, resourceManager);
+      _splash = new Splash("success", 368, 551, resourceManager);
       this.addChild(_splash);
       _splash.onContinue.listen(CloseSplash);
     }

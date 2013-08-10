@@ -162,9 +162,9 @@ main: function() {
   var t1 = new $.HashMap(0, null, null, null, null);
   $.setRuntimeTypeInfo(t1, [$.JSString, $.ResourceManagerResource]);
   t1 = new $.ResourceManager(t1, null, null);
-  t1.addBitmapData$2("start", "images/Start.jpg");
-  t1.addBitmapData$2("intro", "images/Intro.jpg");
-  t1.addBitmapData$2("level_1_intro", "images/Level_1_Intro.jpg");
+  t1.addBitmapData$2("start", "images/Start.png");
+  t1.addBitmapData$2("start_button", "images/Start_Btn.png");
+  t1.addBitmapData$2("intro", "images/Intro.png");
   t1.addBitmapData$2("level_clear", "images/Level_Clear.jpg");
   t1.addBitmapData$2("game", "images/Game.png");
   t1.addBitmapData$2("game_overlay", "images/Game_Overlay.png");
@@ -306,7 +306,7 @@ Game: {"": "DisplayObjectContainer;_children,_mouseChildren,_tabChildren,doubleC
     if ($._level.level === 10)
       this.Success$0();
     else {
-      $._splash = $.Splash$("level_clear", 368, 551, $.resourceManager);
+      $._splash = $.Splash$("success", 368, 551, $.resourceManager);
       this.addChild$1($._splash);
       t1 = $._splash;
       t1.get$onContinue;
@@ -1249,7 +1249,7 @@ Splash: {"": "Sprite;_continueController,buttonMode,useHandCursor,hitArea,_graph
     continueButton = new $.Sprite(false, false, null, null, null, t1, true, true, false, true, true, 0, t2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
     continueButton.set$x(continueButton, x);
     continueButton.set$y(continueButton, y);
-    t2 = $.BitmapData$(284, 79, false, 4278215680, 1);
+    t2 = resourceManager.getBitmapData$1("start_button");
     t1 = $.DisplayObject__nextID;
     $.DisplayObject__nextID = $.$add$ns(t1, 1);
     t1 = new $.Bitmap(null, null, null, t1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, true, false, null, null, null, false, null, null, null, "", null, $.Matrix$fromIdentity(), $.Matrix$fromIdentity(), true, null, null);
@@ -9185,8 +9185,8 @@ BitmapData$fromImageElement: function(imageElement, pixelRatio) {
 BitmapData_load: function(url, bitmapDataLoadOptions, pixelRatio) {
   var t1, t2, completer, imageElement, t3, onLoadSubscription, onErrorSubscription;
   t1 = {};
-  t1.pixelRatio_1 = pixelRatio;
   t1.url_0 = url;
+  t1.pixelRatio_1 = pixelRatio;
   bitmapDataLoadOptions = $.get$BitmapData_defaultLoadOptions();
   if ($.get$Stage_autoHiDpi() && bitmapDataLoadOptions.autoHiDpi) {
     if ($.JSString_methods.contains$1(t1.url_0, "@1x.") === true) {

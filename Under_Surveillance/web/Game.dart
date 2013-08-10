@@ -38,25 +38,25 @@ class Game extends DisplayObjectContainer {
   Level GetLevel(n) {
     switch (n) {
       case 1: 
-        return new Level(stage, resourceManager, 1, 30, 600, 500, 2, 1, 100000);
+        return new Level(stage, resourceManager, 1, 30, 600, 500, 2, 1, 100000, 0.95, 30);
       case 2:
-        return new Level(stage, resourceManager, 2, 45, 600, 500, 4, 1, 100000);
+        return new Level(stage, resourceManager, 2, 45, 600, 500, 4, 1, 100000, 0.9, 35);
       case 3:
-        return new Level(stage, resourceManager, 3, 60, 600, 500, 6, 1, 100000);
+        return new Level(stage, resourceManager, 3, 60, 600, 500, 6, 1, 100000, 0.85, 40);
       case 4:
-        return new Level(stage, resourceManager, 4, 65, 600, 500, 7, 1, 90000);
+        return new Level(stage, resourceManager, 4, 65, 600, 500, 7, 1, 90000, 0.825, 43);
       case 5:
-        return new Level(stage, resourceManager, 5, 65, 600, 500, 8, 1, 90000);
+        return new Level(stage, resourceManager, 5, 65, 600, 500, 8, 1, 90000, 0.8, 46);
       case 6:
-        return new Level(stage, resourceManager, 6, 55, 600, 500, 9, 1, 90000);
+        return new Level(stage, resourceManager, 6, 55, 600, 500, 9, 1, 90000, 0.78, 48);
       case 7:
-        return new Level(stage, resourceManager, 7, 50, 600, 500, 10, 1, 80000);
+        return new Level(stage, resourceManager, 7, 50, 600, 500, 10, 1, 80000, 0.76, 48);
       case 8:
-        return new Level(stage, resourceManager, 8, 45, 600, 500, 10, 1, 70000);
+        return new Level(stage, resourceManager, 8, 45, 600, 500, 10, 1, 70000, 0.74, 49);
       case 9:
-        return new Level(stage, resourceManager, 9, 40, 600, 500, 11, 1, 60000);
+        return new Level(stage, resourceManager, 9, 40, 600, 500, 11, 1, 60000, 0.73, 49);
       case 10:
-        return new Level(stage, resourceManager, 10, 40, 600, 500, 12, 1, 50000);
+        return new Level(stage, resourceManager, 10, 40, 600, 500, 12, 1, 50000, 0.72, 50);
       default:
         return null;
     }
@@ -108,6 +108,8 @@ class Game extends DisplayObjectContainer {
     _gameOverSubscription.cancel();
     
     print("GAME OVER ($reason)");
+    
+    ShowStart();
   }
 }
 

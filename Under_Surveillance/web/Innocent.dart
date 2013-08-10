@@ -1,8 +1,9 @@
 part of UnderSurveillance;
 
 class Innocent extends Person {
-  Innocent(maxSuspisionLevel, x, y, maxX, maxY)
+  Innocent(id, maxSuspisionLevel, x, y, maxX, maxY)
   {
+    this.Id = id;
     this.x = x;    
     this.maxX = maxX;
     this.y = y;

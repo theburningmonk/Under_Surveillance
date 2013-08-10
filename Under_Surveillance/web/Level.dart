@@ -67,37 +67,44 @@ class Level extends DisplayObjectContainer {
   Surveillance _surveillance;
   
   Configuration _configuration;
+  List _names = [ "John", "Alex", "Bartosz", "Slawomir", "Ross", "Valentin", "Bruno", "Yan", "Lynne", "Axel", "Tom",
+                  "Chris", "Darryl", "Domas", "Lambert", "Karla", "Dan", "Trevor", "Paul", "Brandon", "Joe", "Dav",
+                  "Phil", "Milan", "Deepu", "Charles", "Roger", "Mary", "Rickson", "James", "Jeremy", "Richard",
+                  "Jen", "Rita", "Michael", "Emily", "Emma", "Ben", "Anne", "Ivy", "Cyrille" ];
   
-  Level(Stage stage, ResourceManager resourceManager, this.level, this.timeLeft, this.maxX, this.maxY, this.numOfInnocents, this.numOfCriminals, this.budget)
+  Level(Stage stage, ResourceManager resourceManager, this.level, this.timeLeft, this.maxX, this.maxY, this.numOfInnocents, this.numOfCriminals, this.budget, num maxCompliancePc, num maxInnocentSuspicision)
   {
     _configuration = new Configuration();
     
-    Random random = new Random();
-    civilCompliance = 0;
-    maxCivilCompliance = 0.5 * 100.0 * (numOfInnocents + numOfCriminals);
+    Random random = new Random();    
+    maxCivilCompliance = maxCompliancePc * 100.0 * (numOfInnocents + numOfCriminals);
+    civilCompliance = maxCivilCompliance;
     budgetLeft = budget;
     
     all = new List<Person>(numOfInnocents + numOfCriminals);
+    int idx = 1;
     
     innocents = new List<Innocent>(numOfInnocents);
     for (var i = 0; i < numOfInnocents; i++) {
-      Innocent innocent = new Innocent(random.nextInt(60), random.nextInt(maxX), random.nextInt(maxY), maxX, maxY);
-      innocent.onSelected.listen(SelectPerson);
+      Innocent innocent = new Innocent(ChooseName(), random.nextInt(maxInnocentSuspicision), random.nextInt(maxX), random.nextInt(maxY), maxX, maxY)
+        ..onSelected.listen(SelectPerson);
       
       this.addChild(innocent);
       innocents[i] = innocent;
-      all[i] = innocent;
+      all[idx - 1] = innocent;
+      idx += 1;
     }
     
     criminals = new List<Criminal>(numOfCriminals);
     for (var i = 0; i < numOfCriminals; i++) {
-      Criminal criminal = new Criminal(random.nextInt(maxX), random.nextInt(maxY), maxX, maxY);
-      criminal.onSelected.listen(SelectPerson);
+      Criminal criminal = new Criminal(ChooseName(), random.nextInt(maxX), random.nextInt(maxY), maxX, maxY)
+        ..onSelected.listen(SelectPerson);
       
       this.addChild(criminal);
       criminals[i] = criminal;
-      all[i + numOfInnocents] = criminal;      
-    }    
+      all[idx - 1] = criminal;
+      idx += 1;
+    }
 
     var levelText = new TextField()
       ..x = 500
@@ -122,7 +129,7 @@ class Level extends DisplayObjectContainer {
     ..y = 30;
     this.addChild(complianceBarBackground);
     
-    complianceBar = new Bitmap(new BitmapData(1, 20, false, Color.Red))
+    complianceBar = new Bitmap(new BitmapData(300, 20, false, Color.Green))
       ..x = 30
       ..y = 30;
     this.addChild(complianceBar);
@@ -133,6 +140,11 @@ class Level extends DisplayObjectContainer {
   
   Stream get onGameover => _gameOverController.stream;
   Stream get onComplete => _completeController.stream;
+  
+  String ChooseName() {
+    Random random = new Random();
+    return _names[random.nextInt(_names.length)];
+  }
   
   void Start()
   {
@@ -179,10 +191,13 @@ class Level extends DisplayObjectContainer {
     }
     
     complianceBar.width = civilCompliance / maxCivilCompliance * complianceBarBackground.width;
+    if (civilCompliance == 0.0 ) {
+      GameOver("Civil Compliance");
+    }
   }
   
   void IncrIntrusion(num amt) {
-    civilCompliance = min(maxCivilCompliance, civilCompliance + amt);
+    civilCompliance = max(0.0, civilCompliance - amt);
   }
   
   void Surveil(Person person) {

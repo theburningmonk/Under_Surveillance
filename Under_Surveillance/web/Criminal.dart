@@ -1,8 +1,9 @@
 part of UnderSurveillance;
 
 class Criminal extends Person {
-  Criminal(x, y, maxX, maxY)
+  Criminal(id, x, y, maxX, maxY)
   {
+    this.Id = id;
     this.x = x;
     this.y = y;
     this.maxX = maxX;
@@ -10,7 +11,7 @@ class Criminal extends Person {
     this.maxSuspisionLevel = 100.0;
     
     SetDirection();
-    Init(Color.Red);
+    Init(Color.Green);
   }
   
   void OnMouseClick(evt) {

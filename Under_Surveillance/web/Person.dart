@@ -3,13 +3,15 @@ part of UnderSurveillance;
 abstract class Person extends Sprite {
   num suspisionLevel = 0.0;
   num maxSuspisionLevel = 0.0;
-  num complianceLevel = 0.0;
+  num complianceLevel = 100.0;
   num maxComplianceLevel = 100.0;
+  int minY = 80;
   int maxX;
   int maxY;
   num xDir;
   num yDir;
   Random random = new Random();
+  String Id = "";
   
   bool underCctvSurveillance = false;
   bool underCreditCardSurveillance = false;
@@ -77,7 +79,7 @@ abstract class Person extends Sprite {
       ..y = -24;
     this.addChild(complianceBarBackground);
     
-    complianceBar = new Bitmap(new BitmapData(1, 10, false, Color.Red))
+    complianceBar = new Bitmap(new BitmapData(40, 10, false, Color.Green))
       ..x = 0
       ..y = -24;
     this.addChild(complianceBar);
@@ -92,6 +94,12 @@ abstract class Person extends Sprite {
       ..y = -12;
     this.addChild(suspicionBar);
     
+    var nameLabel = new TextField()
+      ..x = 0
+      ..y = 10
+      ..text = Id;
+    this.addChild(nameLabel);
+    
     _selectedController = new StreamController.broadcast();
   }
   
@@ -102,10 +110,10 @@ abstract class Person extends Sprite {
   void Move()
   {
     x = min(maxX, max(0, x += xDir));
-    y = min(maxY, max(0, y += yDir));
+    y = min(maxY, max(minY, y += yDir));
     
     // if the person has reached the boundary, then change direction for the next turn
-    if (x == 0 || x == maxX || y == 0 || y == maxY)
+    if (x == 0 || x == maxX || y == minY || y == maxY)
     {
       SetDirection();
     }
@@ -113,8 +121,8 @@ abstract class Person extends Sprite {
   
   void SetDirection()
   {
-    xDir = random.nextDouble();
-    yDir = random.nextDouble();
+    xDir = random.nextDouble() * 0.7;
+    yDir = random.nextDouble() * 0.7;
     
     if (random.nextDouble() > 0.5) 
     {
@@ -128,7 +136,7 @@ abstract class Person extends Sprite {
   }
   
   void Loop() {
-    if (random.nextInt(100) < 1)
+    if (random.nextInt(1000) < 5)
     {
       SetDirection();
     }
@@ -142,8 +150,14 @@ abstract class Person extends Sprite {
   }
   
   void IncrIntrusion(num amt) {
-    complianceLevel = min(maxComplianceLevel, complianceLevel + amt);
-    complianceBar.width = complianceLevel / maxComplianceLevel * complianceBarBackground.width;    
+    complianceLevel = max(0.0, complianceLevel - amt);
+    complianceBar.width = complianceLevel / maxComplianceLevel * complianceBarBackground.width;
+    
+    if (complianceLevel < 60.0 && complianceLevel > 30) {
+      complianceBar.bitmapData = new BitmapData(40, 10, false, Color.OrangeRed);
+    } else if (complianceLevel <= 30.0) {
+      complianceBar.bitmapData = new BitmapData(40, 10, false, Color.Red);
+    }
   }
   
   void ToggleCctv() {

@@ -2,9 +2,17 @@ part of UnderSurveillance;
 
 class Surveillance extends Sprite {
   Surveillance(Person person, ResourceManager resourceManager) {
-    var cctvLabel = new TextField()
+    var nameLabel = new TextField()
       ..x = 0
       ..y = 0
+      ..width = 150
+      ..height = 40
+      ..text = person.Id;
+    this.addChild(nameLabel);
+    
+    var cctvLabel = new TextField()
+      ..x = 0
+      ..y = 40
       ..width = 150
       ..height = 40
       ..text = "  CCTV Surveillance  "
@@ -15,7 +23,7 @@ class Surveillance extends Sprite {
     
     var creditCardLabel = new TextField()
       ..x = 0
-      ..y = 40
+      ..y = 80
       ..width = 150
       ..height = 40
       ..text = "Credit Card Surveillance"
@@ -26,7 +34,7 @@ class Surveillance extends Sprite {
     
     var emailLabel = new TextField()
       ..x = 0
-      ..y = 80
+      ..y = 120
       ..width = 150
       ..height = 40
       ..text = "Email Surveillance"
@@ -37,7 +45,7 @@ class Surveillance extends Sprite {
     
     var phoneLabel = new TextField()
       ..x = 0
-      ..y = 120
+      ..y = 160
       ..width = 150
       ..height = 40
       ..text = "Phone Surveillance"
@@ -48,7 +56,7 @@ class Surveillance extends Sprite {
     
     var agentLabel = new TextField()
       ..x = 0
-      ..y = 160
+      ..y = 200
       ..width = 150
       ..height = 40
       ..text = "Agent Surveillance"

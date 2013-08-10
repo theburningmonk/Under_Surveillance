@@ -105,33 +105,39 @@ class Level extends DisplayObjectContainer {
       all[idx - 1] = criminal;
       idx += 1;
     }
+    
+    // create labels
+    TextFormat textFormat = new TextFormat("Arial", 16, Color.Black, bold : true);    
 
     var levelText = new TextField()
-      ..x = 500
-      ..y = 30
-      ..text = "Level $level";
+      ..x = 640
+      ..y = 25
+      ..text = "Level $level"
+      ..defaultTextFormat = textFormat;
     this.addChild(levelText);
     
     _timerText = new TextField()
-        ..x = 450
-        ..y = 30
-        ..text = timeLeft.toString();
+        ..x = 30
+        ..y = 25
+        ..text = "Time : ${timeLeft.toString()}s"
+        ..defaultTextFormat = textFormat;
     this.addChild(_timerText);
     
     _budgetLeftText = new TextField()
-      ..x = 350
-      ..y = 30
-      ..text = budgetLeft.toString();
+      ..x = 220
+      ..y = 22
+      ..text = budgetLeft.toString()
+      ..defaultTextFormat = textFormat;
     this.addChild(_budgetLeftText);    
     
-    complianceBarBackground = new Bitmap(new BitmapData(300, 20, false, Color.LightPink))
-    ..x = 30
-    ..y = 30;
+    complianceBarBackground = new Bitmap(new BitmapData(247, 10, false, Color.LightPink))
+    ..x = 178
+    ..y = 50;
     this.addChild(complianceBarBackground);
     
-    complianceBar = new Bitmap(new BitmapData(300, 20, false, Color.Green))
-      ..x = 30
-      ..y = 30;
+    complianceBar = new Bitmap(new BitmapData(247, 10, false, Color.Green))
+      ..x = 178
+      ..y = 50;
     this.addChild(complianceBar);
     
     _gameOverController = new StreamController.broadcast();
@@ -164,8 +170,7 @@ class Level extends DisplayObjectContainer {
   void OnTimerEvent(Timer timer)
   {
     timeLeft -= 1;
-    print("$timeLeft");
-    _timerText.text = timeLeft.toString();
+    _timerText.text = "Time : ${timeLeft.toString()}s";
     
     if (timeLeft == 0) {
       GameOver("time over");
@@ -248,7 +253,7 @@ class Level extends DisplayObjectContainer {
     }
     
     _surveillance = new Surveillance(person, resourceManager)
-      ..x = maxX + 50
+      ..x = 820
       ..y = 100;
     this.addChild(_surveillance);
   }

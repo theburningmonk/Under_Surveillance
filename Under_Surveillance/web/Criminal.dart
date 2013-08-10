@@ -11,7 +11,7 @@ class Criminal extends Person {
     this.maxSuspisionLevel = 100.0;
     
     SetDirection();
-    Init(Color.Green);
+    Init(Color.LightGreen);
   }
   
   void OnMouseClick(evt) {

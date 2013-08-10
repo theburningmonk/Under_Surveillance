@@ -5,7 +5,7 @@ abstract class Person extends Sprite {
   num maxSuspisionLevel = 0.0;
   num complianceLevel = 100.0;
   num maxComplianceLevel = 100.0;
-  int minY = 80;
+  int minY = 120;
   int maxX;
   int maxY;
   num xDir;
@@ -33,9 +33,11 @@ abstract class Person extends Sprite {
   Bitmap complianceBarBackground;
   Bitmap complianceBar;
   
+  num disabledAlpha = 0.5;
+  
   void Init(colour)
   {
-    var background = new BitmapData(40, 40, false, colour);
+    var background = new BitmapData(60, 60, false, colour);
     var backgroundBitmap = new Bitmap(background);
     backgroundBitmap
       ..x = 0
@@ -44,49 +46,70 @@ abstract class Person extends Sprite {
     
     this.onMouseClick.listen(OnMouseClick);
     
+    // create the buttons
+    var buttonOffset = 62;
+    
+    Mask buttonMask = new Mask.rectangle(0, 0, 10, 10)
+      ..border = true
+      ..borderColor = Color.Black
+      ..borderWidth = 1;
+    
     cctvButton = new Bitmap(new BitmapData(10, 10, false, Color.Purple))
       ..x = 0
-      ..y = 42
-      ..alpha = 0.3;
+      ..y = buttonOffset
+      ..alpha = disabledAlpha
+      ..mask = buttonMask;
     this.addChild(cctvButton);    
     
     creditCardButton = new Bitmap(new BitmapData(10, 10, false, Color.Orange))
       ..x = 12
-      ..y = 42
-      ..alpha = 0.3;
+      ..y = buttonOffset
+      ..alpha = disabledAlpha
+      ..mask = buttonMask;
     this.addChild(creditCardButton);
     
     emailButton = new Bitmap(new BitmapData(10, 10, false, Color.Blue))
       ..x = 24
-      ..y = 42
-      ..alpha = 0.3;
+      ..y = buttonOffset
+      ..alpha = disabledAlpha
+      ..mask = buttonMask;
     this.addChild(emailButton);
     
     phoneButton = new Bitmap(new BitmapData(10, 10, false, Color.Yellow))
       ..x = 36
-      ..y = 42
-      ..alpha = 0.3;
+      ..y = buttonOffset
+      ..alpha = disabledAlpha
+      ..mask = buttonMask;
     this.addChild(phoneButton);    
     
     agentButton = new Bitmap(new BitmapData(10, 10, false, Color.Magenta))
       ..x = 48
-      ..y = 42
-      ..alpha = 0.3;
+      ..y = buttonOffset
+      ..alpha = disabledAlpha
+      ..mask = buttonMask;
     this.addChild(agentButton);
     
-    complianceBarBackground = new Bitmap(new BitmapData(40, 10, false, Color.LightPink))
+    // create the bars
+    Mask barMask = new Mask.rectangle(0, 0, 60, 10)
+    ..border = true
+    ..borderColor = Color.Black
+    ..borderWidth = 1;
+    
+    complianceBarBackground = new Bitmap(new BitmapData(60, 10, false, Color.LightPink))
       ..x = 0
-      ..y = -24;
+      ..y = -24
+      ..mask = barMask;
     this.addChild(complianceBarBackground);
     
-    complianceBar = new Bitmap(new BitmapData(40, 10, false, Color.Green))
+    complianceBar = new Bitmap(new BitmapData(60, 10, false, Color.Green))
       ..x = 0
       ..y = -24;
     this.addChild(complianceBar);
     
-    suspicionBarBackground = new Bitmap(new BitmapData(40, 10, false, Color.LightGray))
+    suspicionBarBackground = new Bitmap(new BitmapData(60, 10, false, Color.LightGray))
       ..x = 0
-      ..y = -12;
+      ..y = -12
+      ..mask = barMask;
     this.addChild(suspicionBarBackground);
     
     suspicionBar = new Bitmap(new BitmapData(1, 10, false, Color.Green))
@@ -121,8 +144,8 @@ abstract class Person extends Sprite {
   
   void SetDirection()
   {
-    xDir = random.nextDouble() * 0.7;
-    yDir = random.nextDouble() * 0.7;
+    xDir = random.nextDouble() * 0.6;
+    yDir = random.nextDouble() * 0.6;
     
     if (random.nextDouble() > 0.5) 
     {

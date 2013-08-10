@@ -11,7 +11,7 @@ class Innocent extends Person {
     this.maxSuspisionLevel = maxSuspisionLevel;
     
     SetDirection();
-    Init(Color.Green);
+    Init(Color.LightGreen);
   }
   
   void OnMouseClick(evt) {

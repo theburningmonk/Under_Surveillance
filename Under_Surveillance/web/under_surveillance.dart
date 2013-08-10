@@ -28,7 +28,11 @@ void main() {
     ..addBitmapData("start", "images/Start.jpg")
     ..addBitmapData("intro", "images/Intro.jpg")
     ..addBitmapData("level_1_intro", "images/Level_1_Intro.jpg")
-    ..addBitmapData("level_clear", "images/Level_Clear.jpg");
+    ..addBitmapData("level_clear", "images/Level_Clear.jpg")
+    ..addBitmapData("game", "images/Game.png")
+    ..addBitmapData("game_overlay", "images/Game_Overlay.png")
+    ..addBitmapData("game_over", "images/Game_Over.png")
+    ..addBitmapData("success", "images/Success.png");
   
   resourceManager.load().then(Start);
 }

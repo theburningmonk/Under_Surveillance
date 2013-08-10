@@ -3,6 +3,8 @@ part of UnderSurveillance;
 Level _level;
 Splash _splash;
 StreamSubscription _enterFrameSubscription;
+StreamSubscription _gameOverSubscription;
+StreamSubscription _finishGameSubscription;
 
 class Game extends DisplayObjectContainer {
   Game(ResourceManager resourceManager, Stage stage)
@@ -36,14 +38,14 @@ class Game extends DisplayObjectContainer {
   void StartLevel(n) {
     this.removeChild(_splash);
     
-    _level = new Level(stage, resourceManager, 1, 45, 400, 400, 5, 1, 1000);
+    _level = new Level(stage, resourceManager, 1, 45, 800, 500, 5, 1, 100000);
     _level.x = 0;
     _level.y = 0;
     this.addChild(_level);
     
     _level.Start();
-    _level.onTimeover.listen(OnTimeOver);
-    _level.onComplete.listen(OnLevelComplete);
+    _gameOverSubscription = _level.onGameover.listen(OnGameOver);
+    _finishGameSubscription = _level.onComplete.listen(OnLevelComplete);
     
     _enterFrameSubscription = this.onEnterFrame.listen(Loop);
   }
@@ -57,6 +59,8 @@ class Game extends DisplayObjectContainer {
 
   void OnLevelComplete(int level) {
     _enterFrameSubscription.cancel();
+    _finishGameSubscription.cancel();
+    _gameOverSubscription.cancel();
     
     this.removeChild(_level);
     _splash = new Splash("level_clear", 368, 551, resourceManager);
@@ -64,10 +68,12 @@ class Game extends DisplayObjectContainer {
     _splash.onContinue.listen(CloseSplash);
   }
   
-  void OnTimeOver(evt) {
+  void OnGameOver(reason) {
     _enterFrameSubscription.cancel();
+    _finishGameSubscription.cancel();
+    _gameOverSubscription.cancel();
     
-    print("GAME OVER");
+    print("GAME OVER ($reason)");
   }
 }
 

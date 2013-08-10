@@ -1,8 +1,10 @@
 part of UnderSurveillance;
 
 abstract class Person extends Sprite {
-  num suspisionLevel;
-  num maxSuspisionLevel;
+  num suspisionLevel = 0.0;
+  num maxSuspisionLevel = 0.0;
+  num complianceLevel = 0.0;
+  num maxComplianceLevel = 100.0;
   int maxX;
   int maxY;
   num xDir;
@@ -25,6 +27,9 @@ abstract class Person extends Sprite {
   
   Bitmap suspicionBarBackground;
   Bitmap suspicionBar;
+ 
+  Bitmap complianceBarBackground;
+  Bitmap complianceBar;
   
   void Init(colour)
   {
@@ -67,14 +72,24 @@ abstract class Person extends Sprite {
       ..alpha = 0.3;
     this.addChild(agentButton);
     
-    suspicionBarBackground = new Bitmap(new BitmapData(10, 42, false, Color.White))
+    complianceBarBackground = new Bitmap(new BitmapData(40, 10, false, Color.LightPink))
       ..x = 0
-      ..y = 45;
+      ..y = -24;
+    this.addChild(complianceBarBackground);
+    
+    complianceBar = new Bitmap(new BitmapData(1, 10, false, Color.Red))
+      ..x = 0
+      ..y = -24;
+    this.addChild(complianceBar);
+    
+    suspicionBarBackground = new Bitmap(new BitmapData(40, 10, false, Color.LightGray))
+      ..x = 0
+      ..y = -12;
     this.addChild(suspicionBarBackground);
     
-    suspicionBar = new Bitmap(new BitmapData(10, 0, false, Color.Green))
+    suspicionBar = new Bitmap(new BitmapData(1, 10, false, Color.Green))
       ..x = 0
-      ..y = 45;
+      ..y = -12;
     this.addChild(suspicionBar);
     
     _selectedController = new StreamController.broadcast();
@@ -121,9 +136,14 @@ abstract class Person extends Sprite {
     Move();
   }
   
-  void IncrSuspicion(int amt) {
-    suspisionLevel = min(this.maxSuspisionLevel, suspisionLevel + amt);
+  void IncrSuspicion(num amt) {
+    suspisionLevel = min(maxSuspisionLevel, suspisionLevel + amt);
     suspicionBar.width = suspisionLevel / 100.0 * suspicionBarBackground.width;
+  }
+  
+  void IncrIntrusion(num amt) {
+    complianceLevel = min(maxComplianceLevel, complianceLevel + amt);
+    complianceBar.width = complianceLevel / maxComplianceLevel * complianceBarBackground.width;    
   }
   
   void ToggleCctv() {

@@ -7,6 +7,7 @@ class Criminal extends Person {
     this.y = y;
     this.maxX = maxX;
     this.maxY = maxY;
+    this.maxSuspisionLevel = 100.0;
     
     SetDirection();
     Init(Color.Red);

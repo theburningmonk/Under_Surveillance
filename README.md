@@ -48,6 +48,20 @@ Government agencies have to operate within its budget, so do you, spend careless
 
 As you progress through the levels, the amount of budget and time you have and number of potential suspects will change and make the game more and more challenging.
 
+# Game Play
+
+![How-To-Play] (http://gamecraft-2013-08.s3.amazonaws.com/Agents%20of%20PRISM-instruction.PNG)
+
+Clicking on each target allows you to start or stop the different types of surveillance on him/her.
+
+As you continue to apply surveillance on each of your targets their level of happiness will decrease (even the criminal has the right to be unhappy about being watched you know!), as does the overall civilian happiness.
+
+As surveillance reveals more information about each of your targets your level of suspicion against them will also grow. However, for the innocent civilians you’ll soon realize that they’re clean. For these civilians, continued surveillance on them will no longer raise your suspicion level but would continue to cause them upset so it’s best for you to stop any surveillance on targets as soon as the suspicion level stops growing.
+
+The more intrusive form of surveillance option you use the faster the target’s happiness decreases, and the faster your suspicion level will grow since the surveillance will reveal more information about your target, it also decreases your budget faster too as you fork out to likes of Google, Microsoft and telephone companies in order to acquire communication records..
+
+
+
 
 # Screenshots
 

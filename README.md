@@ -68,7 +68,3 @@ The more intrusive form of surveillance option you use the faster the target’s
 ![In-Game](http://gamecraft-2013-08.s3.amazonaws.com/Agents%20of%20PRISM-small.png)
 
 ![Start](http://gamecraft-2013-08.s3.amazonaws.com/Agents%20of%20PRISM-start-small.png)
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/theburningmonk/under_surveillance/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
